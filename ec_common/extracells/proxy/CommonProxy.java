@@ -8,6 +8,10 @@ import extracells.*;
 import extracells.blocks.BlockSolderingStation;
 import extracells.items.ItemCell;
 import extracells.items.ItemCluster;
+import extracells.items.subitem.SubItemAdjustableCell;
+import extracells.items.subitem.SubItemCell;
+import extracells.items.subitem.SubItemContainerCell;
+import extracells.items.subitem.SubItemStorageCluster;
 import extracells.tile.TileEntitySolderingStation;
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
@@ -17,147 +21,248 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import extracells.container.ContainerSolderingStation;
 
-public class CommonProxy implements IGuiHandler
-{
-	public void addRecipes()
-	{
-		GameRegistry.registerCraftingHandler(new ecCraftingHandler());
-		
-		ItemStack cell256k = new ItemStack(extracells.Cell, 1, 0);
-		ItemStack cell1m = new ItemStack(extracells.Cell, 1, 1);
-		ItemStack cell4m = new ItemStack(extracells.Cell, 1, 2);
-		ItemStack cell16m = new ItemStack(extracells.Cell, 1, 3);
+public class CommonProxy implements IGuiHandler {
+    public void addRecipes() {
+        ItemStack solderingStation = new ItemStack(extracells.SolderingStation,
+                1);
 
-		ItemStack cluster256k = new ItemStack(extracells.Cluster, 1, 0);
-		ItemStack cluster1m = new ItemStack(extracells.Cluster, 1, 1);
-		ItemStack cluster4m = new ItemStack(extracells.Cluster, 1, 2);
-		ItemStack cluster16m = new ItemStack(extracells.Cluster, 1, 3);
+        // SolderingStation
+        GameRegistry.addShapedRecipe(solderingStation, new Object[] { "III",
+                "IDI", "I_I", 'I', Item.ingotIron, 'D', Item.diamond });
+    }
 
-		ItemStack containerCell = new ItemStack(extracells.Cell, 1, 4);
+    public void RegisterTileEntities() {
+        GameRegistry.registerTileEntity(TileEntitySolderingStation.class,
+                "tileEntitySolderingStation");
+    }
 
-		ItemStack solderingStation = new ItemStack(extracells.SolderingStation, 1);
+    public void RegisterRenderers() {
 
-		ItemStack customCell = new ItemStack(extracells.Cell, 1, 5);
+    }
 
-		// Normal Cells
-		GameRegistry.addShapedRecipe(cell256k, new Object[]
-		{ "GFG", "FCF", "DDD", 'G', Block.glass, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 0) });
-		GameRegistry.addShapedRecipe(cell1m, new Object[]
-		{ "GFG", "FCF", "DDD", 'G', Block.glass, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 1) });
-		GameRegistry.addShapedRecipe(cell4m, new Object[]
-		{ "GFG", "FCF", "DDD", 'G', Block.glass, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 2) });
-		GameRegistry.addShapedRecipe(cell16m, new Object[]
-		{ "GFG", "FCF", "DDD", 'G', Block.glass, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 3) });
+    public void RegisterSubItems() {
+        // Cluster SubItems
+        ((ItemCluster) extracells.Cluster).addSubItem("kilo",
+                new SubItemStorageCluster("kilo", 262144,
+                        "extracells:itemKiloCluster", new Object[] { "FPF",
+                                "CDC", "FCF", 'P',
+                                appeng.api.Materials.matProcessorAdvanced, 'F',
+                                appeng.api.Materials.matFluxDust, 'D',
+                                Item.diamond, 'C',
+                                appeng.api.Materials.matStorageCluster }));
+        ((ItemCluster) extracells.Cluster).addSubItem("mega",
+                new SubItemStorageCluster("mega", 1048576,
+                        "extracells:itemMegaCluster", new Object[] {}));
+        ((ItemCluster) extracells.Cluster).addSubItem("giga",
+                new SubItemStorageCluster("giga", 4194304,
+                        "extracells:itemGigaCluster", new Object[] {}));
+        ((ItemCluster) extracells.Cluster).addSubItem("tera",
+                new SubItemStorageCluster("tera", 16777216,
+                        "extracells:itemTeraCluster", new Object[] {}));
 
-		// Cell Container
-		GameRegistry.addShapelessRecipe(containerCell, new Object[]
-		{ appeng.api.Items.itemCell1k, Block.chest });
+        // Cell SubItems
+        ((ItemCell) extracells.Cell).addSubItem("256k", new SubItemCell("256k",
+                262144, 63, "extracells:item256kCell", new Object[] {}));
+        ((ItemCell) extracells.Cell).addSubItem("1024k", new SubItemCell(
+                "1024k", 1048576, 63, "extracells:item1024kCell",
+                new Object[] {}));
+        ((ItemCell) extracells.Cell).addSubItem("4096k", new SubItemCell(
+                "4096k", 4194304, 63, "extracells:item4096kCell",
+                new Object[] {}));
+        ((ItemCell) extracells.Cell).addSubItem("16348k", new SubItemCell(
+                "16348k", 16777216, 63, "extracells:item16348kCell",
+                new Object[] {}));
+        ((ItemCell) extracells.Cell).addSubItem("container",
+                new SubItemContainerCell(new Object[] {
+                        appeng.api.Items.itemCell1k, Block.chest }));
+        ((ItemCell) extracells.Cell).addSubItem("adjustable",
+                new SubItemAdjustableCell(new Object[] { " P ", "SSS", " P ",
+                        'P', appeng.api.Materials.matProcessorBasic, 'S',
+                        appeng.api.Items.itemCell1k }));
+    }
 
-		// Clusters
-		GameRegistry.addShapedRecipe(cluster256k, new Object[]
-		{ "FPF", "CDC", "FCF", 'P', appeng.api.Materials.matProcessorAdvanced, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', appeng.api.Materials.matStorageCluster });
-		GameRegistry.addShapedRecipe(cluster1m, new Object[]
-		{ "FPF", "CDC", "FCF", 'P', appeng.api.Materials.matProcessorAdvanced, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 0) });
-		GameRegistry.addShapedRecipe(cluster4m, new Object[]
-		{ "FPF", "CDC", "FCF", 'P', appeng.api.Materials.matProcessorAdvanced, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 1) });
-		GameRegistry.addShapedRecipe(cluster16m, new Object[]
-		{ "FPF", "CDC", "FCF", 'P', appeng.api.Materials.matProcessorAdvanced, 'F', appeng.api.Materials.matFluxDust, 'D', Item.diamond, 'C', new ItemStack(extracells.Cluster, 1, 2) });
+    public void RegisterItems() {
+        extracells.Cluster = new ItemCluster(extracells.Cluster_ID)
+                .setUnlocalizedName("cluster");
+        extracells.Cell = new ItemCell(extracells.Cell_ID);
+        RegisterSubItems();
+        registerSubRecipes();
+    }
 
-		// SolderingStation
-		GameRegistry.addShapedRecipe(solderingStation, new Object[]
-		{ "III", "IDI", "I_I", 'I', Item.ingotIron, 'D', Item.diamond });
+    public void RegisterBlocks() {
+        extracells.SolderingStation = new BlockSolderingStation(
+                extracells.SolderingStation_ID, Material.rock);
+        GameRegistry.registerBlock(extracells.SolderingStation,
+                extracells.SolderingStation.getUnlocalizedName());
+    }
 
-		// Customizable Cell
-		GameRegistry.addShapedRecipe(customCell, new Object[]
-		{ " P ", "SSS", " P ", 'P', appeng.api.Materials.matProcessorBasic, 'S', appeng.api.Items.itemCell1k });
-	}
+    private void registerSubRecipes() {
+        // Cluster SubItem recipes
+        ((ItemCluster) extracells.Cluster).getSubItem("mega").setRecipe(
+                new Object[] {
+                        "FPF",
+                        "CDC",
+                        "FCF",
+                        'P',
+                        appeng.api.Materials.matProcessorAdvanced,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("kilo",
+                                1, 0) });
+        ((ItemCluster) extracells.Cluster).getSubItem("giga").setRecipe(
+                new Object[] {
+                        "FPF",
+                        "CDC",
+                        "FCF",
+                        'P',
+                        appeng.api.Materials.matProcessorAdvanced,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("mega",
+                                1, 0) });
+        ((ItemCluster) extracells.Cluster).getSubItem("tera").setRecipe(
+                new Object[] {
+                        "FPF",
+                        "CDC",
+                        "FCF",
+                        'P',
+                        appeng.api.Materials.matProcessorAdvanced,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("giga",
+                                1, 0) });
 
-	public void RegisterTileEntities()
-	{
-		GameRegistry.registerTileEntity(TileEntitySolderingStation.class, "tileEntitySolderingStation");
-	}
+        // Cell SubItem recipes
+        ((ItemCell) extracells.Cell).getSubItem("256k").setRecipe(
+                new Object[] {
+                        "GFG",
+                        "FCF",
+                        "DDD",
+                        'G',
+                        Block.glass,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("kilo",
+                                1, 0) });
+        ((ItemCell) extracells.Cell).getSubItem("1024k").setRecipe(
+                new Object[] {
+                        "GFG",
+                        "FCF",
+                        "DDD",
+                        'G',
+                        Block.glass,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("mega",
+                                1, 0) });
+        ((ItemCell) extracells.Cell).getSubItem("4096k").setRecipe(
+                new Object[] {
+                        "GFG",
+                        "FCF",
+                        "DDD",
+                        'G',
+                        Block.glass,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("giga",
+                                1, 0) });
+        ((ItemCell) extracells.Cell).getSubItem("16348k").setRecipe(
+                new Object[] {
+                        "GFG",
+                        "FCF",
+                        "DDD",
+                        'G',
+                        Block.glass,
+                        'F',
+                        appeng.api.Materials.matFluxDust,
+                        'D',
+                        Item.diamond,
+                        'C',
+                        ((ItemCluster) extracells.Cluster).createStack("tera",
+                                1, 0) });
 
-	public void RegisterRenderers()
-	{
+        ((ItemCluster) extracells.Cluster).registerRecipes();
+        ((ItemCell) extracells.Cell).registerRecipes();
+    }
 
-	}
+    public void RegisterNames() {
+        // Items
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCell.256k.name", "ME 256K Storage");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCell.1024k.name", "ME 1M Storage");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCell.4096k.name", "ME 4M Storage");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCell.16348k.name", "ME 16M Storage");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCell.adjustable.name", "Adjustable ME Storage");
 
-	public void RegisterItems()
-	{
-		extracells.Cell = new ItemCell(extracells.Cell_ID).setUnlocalizedName("cell");
-		extracells.Cluster = new ItemCluster(extracells.Cluster_ID).setUnlocalizedName("cluster");
-	}
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCluster.kilo.name", "Kilo Storage Cluster");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCluster.mega.name", "Mega Storage Cluster");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCluster.giga.name", "Giga Storage Cluster");
+        LanguageRegistry.instance().addStringLocalization(
+                "item.extraCluster.tera.name", "Tera Storage Cluster");
+        LanguageRegistry.instance().addStringLocalization(
+                "itemGroup.Extra_Cells", "en_US", "Extra Cells");
 
-	public void RegisterBlocks()
-	{
-		extracells.SolderingStation = new BlockSolderingStation(extracells.SolderingStation_ID, Material.rock);
-		GameRegistry.registerBlock(extracells.SolderingStation, extracells.SolderingStation.getUnlocalizedName());
-	}
+        LanguageRegistry.instance();
+        // Blocks
+        LanguageRegistry.addName(extracells.SolderingStation,
+                "Soldering-Station");
+    }
 
-	public void RegisterNames()
-	{
-		LanguageRegistry.instance();
-		// Items
-		LanguageRegistry.addName(new ItemStack(extracells.Cell, 1, 0), ItemCell.localized_names[0]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cell, 1, 1), ItemCell.localized_names[1]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cell, 1, 2), ItemCell.localized_names[2]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cell, 1, 3), ItemCell.localized_names[3]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cell, 1, 4), ItemCell.localized_names[4]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cluster, 1, 0), ItemCluster.localized_names[0]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cluster, 1, 1), ItemCluster.localized_names[1]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cluster, 1, 2), ItemCluster.localized_names[2]);
-		LanguageRegistry.instance();
-		LanguageRegistry.addName(new ItemStack(extracells.Cluster, 1, 3), ItemCluster.localized_names[3]);
-		LanguageRegistry.instance().addStringLocalization("itemGroup.Extra_Cells", "en_US", "Extra Cells");
+    @Override
+    public Object getClientGuiElement(int ID, EntityPlayer player, World world,
+            int x, int y, int z) {
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+        if (tileEntity != null) {
+            switch (ID) {
+                case 0: // GUI Soldering Station
+                    return null;
+                default:
+                    return false;
+            }
+        } else {
+            return false;
+        }
+    }
 
-		LanguageRegistry.instance();
-		// Blocks
-		LanguageRegistry.addName(extracells.SolderingStation, "Soldering-Station");
-	}
+    @Override
+    public Object getServerGuiElement(int ID, EntityPlayer player, World world,
+            int x, int y, int z) {
+        TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
 
-	@Override
-	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-		if (tileEntity != null)
-		{
-			switch (ID)
-			{
-			case 0: // GUI Soldering Station
-				return null;
-			default:
-				return false;
-			}
-		} else
-		{
-			return false;
-		}
-	}
-
-	@Override
-	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
-	{
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
-
-		if (tileEntity != null)
-		{
-			switch (ID)
-			{
-			case 0: // GUI Soldering Station
-				return new ContainerSolderingStation();
-			default:
-				return false;
-			}
-		} else
-		{
-			return false;
-		}
-	}
+        if (tileEntity != null) {
+            switch (ID) {
+                case 0: // GUI Soldering Station
+                    return new ContainerSolderingStation();
+                default:
+                    return false;
+            }
+        } else {
+            return false;
+        }
+    }
 }
