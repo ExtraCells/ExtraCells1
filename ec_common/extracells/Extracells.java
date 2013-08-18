@@ -1,10 +1,12 @@
 package extracells;
 
+import appeng.api.Util;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.oredict.OreDictionary;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -16,11 +18,12 @@ import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 import extracells.blocks.BlockMEDropper;
+import extracells.handler.FluidCellHandler;
 import extracells.localization.LocalizationHandler;
 import extracells.network.PacketHandler;
 import extracells.proxy.CommonProxy;
 
-@Mod(modid = "extracells", name = "Extra Cells", version = "1.3.1", dependencies = "required-after:AppliedEnergistics")
+@Mod(modid = "extracells", name = "Extra Cells", version = "1.3.3", dependencies = "required-after:AppliedEnergistics")
 @NetworkMod(channels =
 { PacketHandler.channel }, clientSideRequired = true, serverSideRequired = false, packetHandler = PacketHandler.class)
 public class Extracells
@@ -51,6 +54,7 @@ public class Extracells
 	public static Block MEBattery;
 	public static Block HardMEDrive;
 	public static Block BusFluidImport;
+	public static Block BusFluidExport;
 	public static Block BusFluidStorage;
 	public static Block TerminalFluid;
 	public static int StoragePhysical_ID;
@@ -65,6 +69,7 @@ public class Extracells
 	public static int MEBattery_ID;
 	public static int HardMEDrive_ID;
 	public static int BusFluidImport_ID;
+	public static int BusFluidExport_ID;
 	public static int BusFluidStorage_ID;
 	public static int TerminalFluid_ID;
 
@@ -90,8 +95,9 @@ public class Extracells
 		int meBatteryTemp = config.getBlock("MEBattery_ID", 502, "ID for the ME Backup Battery").getInt();
 		int hardMEDriveTemp = config.getBlock("HardMEDrive_ID", 503, "ID for the Blast Resistant ME Drive").getInt();
 		int busFluidImportTemp = config.getBlock("BusFluidImport_ID", 504, "ID for the Fluid Import Bus").getInt();
-		int busFluidStorageTemp = config.getBlock("BusFluidStorage_ID", 505, "ID for the Fluid Storage Bus").getInt();
-		int monitorFluidTemp = config.getBlock("MonitorFluid_ID", 506, "ID for the Fluid Storage Monitor").getInt();
+		int busFluidExportTemp = config.getBlock("BusFluidExport_ID", 505, "ID for the Fluid Export Bus").getInt();
+		int busFluidStorageTemp = config.getBlock("BusFluidStorage_ID", 506, "ID for the Fluid Storage Bus").getInt();
+		int monitorFluidTemp = config.getBlock("MonitorFluid_ID", 507, "ID for the Fluid Storage Monitor").getInt();
 		config.save();
 
 		Cluster_ID = clusterTemp;
@@ -106,6 +112,7 @@ public class Extracells
 		MEBattery_ID = meBatteryTemp;
 		HardMEDrive_ID = hardMEDriveTemp;
 		BusFluidImport_ID = busFluidImportTemp;
+		BusFluidExport_ID = busFluidExportTemp;
 		BusFluidStorage_ID = busFluidStorageTemp;
 		TerminalFluid_ID = monitorFluidTemp;
 	}
@@ -115,10 +122,12 @@ public class Extracells
 	{
 		proxy.RegisterItems();
 		proxy.RegisterBlocks();
-		LanguageRegistry.instance().addStringLocalization("itemGroup.Extra_Cells", "en_US", "Extra Cells");
 		proxy.RegisterRenderers();
 		proxy.RegisterTileEntities();
 		proxy.addRecipes();
+		//Util.addBasicBlackList(extracells.Extracells.FluidDisplay.itemID, OreDictionary.WILDCARD_VALUE);
+		Util.getCellRegistry().addCellHandler(new FluidCellHandler());
+		LanguageRegistry.instance().addStringLocalization("itemGroup.Extra_Cells", "en_US", "Extra Cells");
 	}
 
 	@EventHandler

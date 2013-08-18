@@ -2,6 +2,7 @@ package extracells.blocks;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import extracells.Extracells;
 import extracells.tile.TileEntityBusFluidImport;
 import extracells.tile.TileEntityBusFluidStorage;
 import net.minecraft.block.BlockContainer;
@@ -9,9 +10,11 @@ import net.minecraft.block.BlockPistonBase;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
 public class BlockBusFluidStorage extends BlockContainer
@@ -21,6 +24,10 @@ public class BlockBusFluidStorage extends BlockContainer
 	Icon frontIcon;
 	@SideOnly(Side.CLIENT)
 	Icon sideIcon;
+	@SideOnly(Side.CLIENT)
+	Icon bottomIcon;
+	@SideOnly(Side.CLIENT)
+	Icon topIcon;
 
 	public BlockBusFluidStorage(int id)
 	{
@@ -40,14 +47,54 @@ public class BlockBusFluidStorage extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int side, int metadata)
 	{
-		return side == metadata ? this.frontIcon : this.sideIcon;
+		return giveIcon(side, 3);
+	}
+
+	@SideOnly(Side.CLIENT)
+	public Icon giveIcon(int side, int metadata)
+	{
+		return side == metadata ? frontIcon : side == 0 ? bottomIcon : side == 1 ? topIcon : sideIcon;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess blockAccess, int x, int y, int z, int side)
+	{
+		TileEntity tileentity = blockAccess.getBlockTileEntity(x, y, z);
+		int metadata = blockAccess.getBlockMetadata(x, y, z);
+
+		if (tileentity != null)
+		{
+			return giveIcon(side, metadata);
+		}
+		return null;
 	}
 
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconregister)
 	{
-		this.sideIcon = iconregister.registerIcon("extracells:machine.side");
+
 		this.frontIcon = iconregister.registerIcon("extracells:fluid.bus.storage.front");
+		this.sideIcon = iconregister.registerIcon("extracells:machine.side");
+		this.bottomIcon = iconregister.registerIcon("extracells:machine.bottom");
+		this.topIcon = iconregister.registerIcon("extracells:machine.top");
+	}
+
+	@Override
+	public boolean onBlockActivated(World world, int x, int y, int z, EntityPlayer player, int side, float offsetX, float offsetY, float offsetZ)
+	{
+		if (world.getBlockTileEntity(x, y, z) == null || player.isSneaking())
+		{
+			return false;
+		}
+		player.openGui(Extracells.instance, 2, world, x, y, z);
+		return true;
+	}
+
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int neighbourID)
+	{
+		((TileEntityBusFluidStorage) world.getBlockTileEntity(x, y, z)).validate();
 	}
 
 	@Override

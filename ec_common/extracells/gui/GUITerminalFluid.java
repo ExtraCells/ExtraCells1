@@ -23,17 +23,17 @@ import extracells.network.PacketHandler;
 import extracells.tile.TileEntityTerminalFluid;
 
 @SideOnly(Side.CLIENT)
-public class GUITerminalFluid extends GuiContainer
+public class GuiTerminalFluid extends GuiContainer
 {
 
 	public static final int xSize = 176;
-	public static final int ySize = 166;
+	public static final int ySize = 175;
 	public String fluidName;
 	public WorldCoord tilePos;
 	TileEntityTerminalFluid tileEntity;
 	ContainerTerminalFluid container;
 
-	public GUITerminalFluid(int x, int y, int z, InventoryPlayer inventory, TileEntity tileEntity)
+	public GuiTerminalFluid(int x, int y, int z, InventoryPlayer inventory, TileEntity tileEntity)
 	{
 		super(new ContainerTerminalFluid(inventory, tileEntity));
 		container = (ContainerTerminalFluid) this.inventorySlots;
@@ -57,9 +57,9 @@ public class GUITerminalFluid extends GuiContainer
 		this.buttonList.clear();
 
 		// Up
-		this.buttonList.add(new GuiButton(0, posX + 155, posY + 10, 10, 10, "\u25B2"));
+		this.buttonList.add(new GuiButton(0, posX + 155, posY + 18, 10, 10, "\u25B2"));
 		// Down
-		this.buttonList.add(new GuiButton(1, posX + 155, posY + 20, 10, 10, "\u25BC"));
+		this.buttonList.add(new GuiButton(1, posX + 155, posY + 29, 10, 10, "\u25BC"));
 	}
 
 	public void actionPerformed(GuiButton button)
@@ -67,10 +67,10 @@ public class GUITerminalFluid extends GuiContainer
 		switch (button.id)
 		{
 		case 0:
-			PacketHandler.sendMonitorFluidPacket(tilePos.x, tilePos.y, tilePos.z, 1);
+			PacketHandler.sendMonitorFluidPacket(tilePos.x, tilePos.y, tilePos.z, 0);
 			break;
 		case 1:
-			PacketHandler.sendMonitorFluidPacket(tilePos.x, tilePos.y, tilePos.z, 2);
+			PacketHandler.sendMonitorFluidPacket(tilePos.x, tilePos.y, tilePos.z, 1);
 			break;
 		}
 	}
@@ -89,19 +89,17 @@ public class GUITerminalFluid extends GuiContainer
 	@Override
 	protected void drawGuiContainerForegroundLayer(int sizeX, int sizeY)
 	{
-		this.fontRenderer.drawString(StatCollector.translateToLocal("tile.block.fluid.terminal"), 0, 0, 0x000000);
-
-		PacketHandler.sendMonitorFluidPacket(tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord, 0);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("tile.block.fluid.terminal"), 5, 0, 0x000000);
 
 		int posX = (this.width - xSize) / 2;
 		int posY = (this.height - ySize) / 2;
 
-		int amount;
+		long amount;
 		String fluidname;
 
 		if (container.getSlot(2).getStack() != null && container.getSlot(2).getStack().getTagCompound() != null)
 		{
-			amount = container.getSlot(2).getStack().getTagCompound().getInteger("amount");
+			amount = container.getSlot(2).getStack().getTagCompound().getLong("amount");
 			fluidname = container.getSlot(2).getStack().getTagCompound().getString("fluidname");
 		} else
 		{
@@ -121,8 +119,8 @@ public class GUITerminalFluid extends GuiContainer
 			suffix = "K mB";
 		}
 
-		this.fontRenderer.drawString(StatCollector.translateToLocal("tooltip.amount") + ": " + amount + suffix, 15, 15, 0xFFFFFF);
-		this.fontRenderer.drawString(StatCollector.translateToLocal("tooltip.fluid") + ": " + fluidname, 15, 25, 0xFFFFFF);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("tooltip.amount") + ": " + amount + suffix, 13, 15, 0xFFFFFF);
+		this.fontRenderer.drawString(StatCollector.translateToLocal("tooltip.fluid") + ": " + fluidname, 13, 25, 0xFFFFFF);
 	}
 
 	public int getRowLength()
