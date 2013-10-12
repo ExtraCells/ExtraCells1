@@ -124,14 +124,9 @@ public class CommonProxy implements IGuiHandler
 
 		// Fluid Cells
 		GameRegistry.addShapedRecipe(storageFluid1k, new Object[]
-		{ "CSC", "SBS", "CSC", 'C', appeng.api.Items.itemCell1k, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'B', Item.bucketEmpty });
+		{ "TST", "SCS", "TST", 'T', Extracells.CertusTank, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'C', appeng.api.Items.itemCell1k });
 		GameRegistry.addShapedRecipe(storageFluid4k, new Object[]
-		{ "CSC", "SBS", "CSC", 'C', appeng.api.Items.itemCell4k, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'B', Item.bucketEmpty });
-		GameRegistry.addShapedRecipe(storageFluid16k, new Object[]
-		{ "CSC", "SBS", "CSC", 'C', appeng.api.Items.itemCell16k, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'B', Item.bucketEmpty });
-		GameRegistry.addShapedRecipe(storageFluid64k, new Object[]
-		{ "CSC", "SBS", "CSC", 'C', appeng.api.Items.itemCell64k, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'B', Item.bucketEmpty });
-
+		{ "TST", "SCS", "TST", 'T', Extracells.CertusTank, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'C', appeng.api.Items.itemCell4k });
 		// Cell Container
 		GameRegistry.addShapelessRecipe(containerCell, new Object[]
 		{ appeng.api.Items.itemCell1k, Block.chest });
