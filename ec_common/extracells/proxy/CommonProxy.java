@@ -70,6 +70,13 @@ public class CommonProxy implements IGuiHandler
 		ItemStack storagePhysical16m = new ItemStack(Extracells.StoragePhysical, 1, 3);
 
 		ItemStack storageFluid1k = new ItemStack(Extracells.StorageFluid, 1, 0);
+		ItemStack storageFluid4k = new ItemStack(Extracells.StorageFluid, 1, 1);
+		ItemStack storageFluid16k = new ItemStack(Extracells.StorageFluid, 1, 2);
+		ItemStack storageFluid64k = new ItemStack(Extracells.StorageFluid, 1, 3);
+		ItemStack storageFluid256k = new ItemStack(Extracells.StorageFluid, 1, 4);
+		ItemStack storageFluid1m = new ItemStack(Extracells.StorageFluid, 1, 5);
+		ItemStack storageFluid4m = new ItemStack(Extracells.StorageFluid, 1, 6);
+		ItemStack storageFluid16m = new ItemStack(Extracells.StorageFluid, 1, 7);
 
 		ItemStack containerCell = new ItemStack(Extracells.StoragePhysical, 1, 4);
 
@@ -120,8 +127,9 @@ public class CommonProxy implements IGuiHandler
 
 		// Fluid Cells
 		GameRegistry.addShapedRecipe(storageFluid1k, new Object[]
-		{ "CSC", "SBS", "CSC", 'C', appeng.api.Items.itemCell1k, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'B', Item.bucketEmpty });
-
+		{ "TST", "SCS", "TST", 'T', Extracells.CertusTank, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'C', appeng.api.Items.itemCell1k });
+		GameRegistry.addShapedRecipe(storageFluid4k, new Object[]
+		{ "TST", "SCS", "TST", 'T', Extracells.CertusTank, 'S', appeng.api.Blocks.blkColorlessCableCovered, 'C', appeng.api.Items.itemCell4k });
 		// Cell Container
 		GameRegistry.addShapelessRecipe(containerCell, new Object[]
 		{ appeng.api.Items.itemCell1k, Block.chest });
