@@ -1,5 +1,7 @@
 package extracells.tileentity;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -77,6 +79,20 @@ public class TileEntityCertusTank extends TileEntity implements IFluidHandler
 		return fill(resource, doFill, true);
 	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean canUpdate()
+	{
+		return true;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateEntity()
+	{
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+	}
+	
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
