@@ -1,7 +1,5 @@
 package extracells.tileentity;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -43,6 +41,7 @@ public class TileEntityCertusTank extends TileEntity implements IFluidHandler
 
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet)
 	{
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		readFromNBT(packet.data);
 	}
 
@@ -77,20 +76,6 @@ public class TileEntityCertusTank extends TileEntity implements IFluidHandler
 		if (resource == null || (tank.getFluid() != null && resource.fluidID != tank.getFluid().fluidID))
 			return 0;
 		return fill(resource, doFill, true);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean canUpdate()
-	{
-		return true;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void updateEntity()
-	{
-		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override
