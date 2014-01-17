@@ -41,6 +41,7 @@ public class TileEntityCertusTank extends TileEntity implements IFluidHandler
 
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData packet)
 	{
+		worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 		readFromNBT(packet.data);
 	}
 
@@ -76,7 +77,7 @@ public class TileEntityCertusTank extends TileEntity implements IFluidHandler
 			return 0;
 		return fill(resource, doFill, true);
 	}
-
+	
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
