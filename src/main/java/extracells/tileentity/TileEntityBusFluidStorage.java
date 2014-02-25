@@ -246,8 +246,14 @@ public class TileEntityBusFluidStorage extends ColorableECTile implements IGridM
 
 				if (FluidContainerRegistry.isFilledContainer(itemStack))
 				{
-					fluidContainer = new ItemStack(FLUIDDISPLAY.getItemInstance(), 1, FluidContainerRegistry.getFluidForFilledItem(itemStack).getFluid().getID());
-					filter.add(fluidContainer);
+					FluidStack containerFluidStack = FluidContainerRegistry.getFluidForFilledItem(itemStack);
+					if(containerFluidStack != null){
+						Fluid containerFluid = containerFluidStack.getFluid();
+						if(containerFluid != null){
+							fluidContainer = new ItemStack(FLUIDDISPLAY.getItemInstance(), 1, containerFluid.getID());
+							filter.add(fluidContainer);
+						}
+					}
 				} else if (itemStack != null && itemStack.getItem() instanceof IFluidContainerItem && ((IFluidContainerItem) itemStack.getItem()).getFluid(itemStack) != null)
 				{
 					fluidContainer = new ItemStack(FLUIDDISPLAY.getItemInstance(), 1, ((IFluidContainerItem) itemStack.getItem()).getFluid(itemStack).fluidID);
