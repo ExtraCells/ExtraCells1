@@ -22,6 +22,7 @@ import appeng.api.me.util.ICraftingPattern;
 import appeng.api.me.util.IGridInterface;
 import appeng.api.me.util.ITileCraftingProvider;
 import extracells.ItemEnum;
+import extracells.Extracells;
 import extracells.util.ECPrivateInventory;
 import extracells.util.ECPrivatePatternInventory;
 
