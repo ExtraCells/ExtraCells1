@@ -17,6 +17,7 @@ import dan200.computer.api.ILuaContext;
 import dan200.computer.api.IPeripheral;
 import extracells.ItemEnum;
 import extracells.integration.logisticspipes.IFluidNetworkAccess;
+import extracells.items.ItemFluidDisplay;
 import extracells.util.ECPrivateInventory;
 import extracells.util.SpecialFluidStack;
 import net.minecraft.item.ItemStack;
@@ -33,7 +34,9 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Optional.Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 @SuppressWarnings("deprecation")
@@ -420,7 +423,7 @@ public class TileEntityInterfaceFluid extends ColorableECTile implements IGridMa
     @Optional.Method(modid = "ComputerCraft")
     @Override
     public String[] getMethodNames() {
-        return new String[] {"listMethods", "getStoredAmount"};
+        return new String[] {"listMethods", "getStoredFluids", "getStoredAmount"};
     }
 
     @Optional.Method(modid = "ComputerCraft")
@@ -429,7 +432,20 @@ public class TileEntityInterfaceFluid extends ColorableECTile implements IGridMa
         if(method == 0) { // listMethods
             return getMethodNames();
         }
-        else if(method == 1) { // getStoredAmount
+        else if(method == 1) { // getStoredFluids
+            Map<String, HashMap<String, Object>> storedFluids = new HashMap<String, HashMap<String, Object>>();
+
+            for(IAEItemStack stck : grid.getCellArray().getAvailableItems()) {
+                if(stck != null && stck.getItem() instanceof ItemFluidDisplay) {
+                    Fluid fluid = FluidRegistry.getFluid(stck.getItemDamage());
+                    HashMap<String, Object> innerMap = new HashMap<String, Object>();
+                    innerMap.put("amount", grid.getCellArray().countOfItemType(stck));
+                    storedFluids.put(fluid.getName(), innerMap);
+                }
+            }
+            return new Object[]{storedFluids};
+        }
+        else if(method == 2) { // getStoredAmount
             if(arguments.length < 1 || arguments.length > 1)
                 return new Object[]{"ERROR: getStoredAmount(String fluid)"};
 
