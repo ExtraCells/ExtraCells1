@@ -33,8 +33,24 @@ public class TileEntityFluidCrafter extends TileEntity implements ITileCraftingP
 	private ECPrivateInventory bufferInventory = new ECPrivateInventory("", 18, 10000);
 	private IGridInterface grid;
 	private boolean powerStatus = false, networkStatus = true;
+	private int currentTick = 0;
+	private final int tickRate = Extracells.tickRateImport;
 
+	@Override
 	public void updateEntity()
+	{
+		if (!worldObj.isRemote)
+		{
+			currentTick++;
+			if (currentTick == tickRate)
+			{
+				currentTick = 0;
+				doUpdateEntity();
+			}
+		}
+	}
+	
+	public void doUpdateEntity()
 	{
 		if (grid != null && isMachineActive() && grid.getCellArray() != null)
 		{
