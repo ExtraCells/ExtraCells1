@@ -10,7 +10,11 @@ import appeng.api.me.tiles.IGridMachine;
 import appeng.api.me.tiles.IStorageAware;
 import appeng.api.me.util.IGridInterface;
 import appeng.api.me.util.IMEInventoryHandler;
+import cpw.mods.fml.common.Optional;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import dan200.computer.api.IComputerAccess;
+import dan200.computer.api.ILuaContext;
+import dan200.computer.api.IPeripheral;
 import extracells.ItemEnum;
 import extracells.integration.logisticspipes.IFluidNetworkAccess;
 import extracells.util.ECPrivateInventory;
@@ -31,13 +35,15 @@ import net.minecraftforge.fluids.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@Optional.Interface(modid = "ComputerCraft", iface = "dan200.computer.api.IPeripheral")
 @SuppressWarnings("deprecation")
-public class TileEntityInterfaceFluid extends ColorableECTile implements IGridMachine, IFluidHandler, IStorageAware, IFluidNetworkAccess
+public class TileEntityInterfaceFluid extends ColorableECTile implements IGridMachine, IFluidHandler, IStorageAware, IFluidNetworkAccess,
+        IPeripheral
 {
 	private boolean powerStatus = true, networkReady = true, cached = false;
 	private IGridInterface grid;
 	public FluidTank[] tanks = new FluidTank[6];
-	private String customName = StatCollector.translateToLocal("tile.block.fluid.bus.export");
+	private String customName = StatCollector.translateToLocal("tile.block.fluid.interface");
 	private ECPrivateInventory inventory = new ECPrivateInventory(customName, 6, 1);
 	private List<SpecialFluidStack> fluidList = new ArrayList<SpecialFluidStack>();
 
@@ -403,4 +409,58 @@ public class TileEntityInterfaceFluid extends ColorableECTile implements IGridMa
 	{
 		// TODO ORDERFLUID
 	}
+
+    /* IPeripheral */
+    @Optional.Method(modid = "ComputerCraft")
+    @Override
+    public String getType() {
+        return "fluidPeripheral";
+    }
+
+    @Optional.Method(modid = "ComputerCraft")
+    @Override
+    public String[] getMethodNames() {
+        return new String[] {"listMethods", "getStoredAmount"};
+    }
+
+    @Optional.Method(modid = "ComputerCraft")
+    @Override
+    public Object[] callMethod(IComputerAccess computer, ILuaContext context, int method, Object[] arguments) throws Exception {
+        if(method == 0) { // listMethods
+            return getMethodNames();
+        }
+        else if(method == 1) { // getStoredAmount
+            if(arguments.length < 1 || arguments.length > 1)
+                return new Object[]{"ERROR: getStoredAmount(String fluid)"};
+
+            Fluid fluid = FluidRegistry.getFluid((String) arguments[0]);
+            if(fluid == null)
+                return new Object[]{"Couldn't find that fluid, check the name!"};
+
+            ItemStack is = new ItemStack(ItemEnum.FLUIDDISPLAY.getItemInstance().itemID, 1, fluid.getID());
+            if(is == null)
+                return new Object[]{"ItemStack corrupted!"};
+
+            return new Object[] {grid.getCellArray().countOfItemType(Util.createItemStack(is))};
+        }
+        return new Object[0];
+    }
+
+    @Optional.Method(modid = "ComputerCraft")
+    @Override
+    public boolean canAttachToSide(int side) {
+        return true;
+    }
+
+    @Optional.Method(modid = "ComputerCraft")
+    @Override
+    public void attach(IComputerAccess computer) {
+
+    }
+
+    @Optional.Method(modid = "ComputerCraft")
+    @Override
+    public void detach(IComputerAccess computer) {
+
+    }
 }
