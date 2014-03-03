@@ -8,6 +8,7 @@ import extracells.tileentity.TileEntityTerminalFluid;
 import extracells.util.SpecialFluidStack;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
+import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
@@ -49,17 +50,24 @@ public class WidgetFluidSelector extends AbstractFluidWidget
 		{
 			if (amount > 0 && fluid != null)
 			{
+                boolean shiftDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
 				String amountToText = Long.toString(amount) + "mB";
 				if (Extracells.shortenedBuckets)
 				{
-					if (amount > 1000000000L)
-						amountToText = Long.toString(amount / 1000000000L) + "MegaB";
-					else if (amount > 1000000L)
-						amountToText = Long.toString(amount / 1000000L) + "KiloB";
-					else if (amount > 9999L)
-					{
-						amountToText = Long.toString(amount / 1000L) + "B";
-					}
+                    if (amount > 1000000000L) {
+                        if(shiftDown)
+                            amountToText = Long.toString(amount / 1000000L) + "KiloB";
+                        else
+                            amountToText = Long.toString(amount / 1000000000L) + "MegaB";
+                    }
+                    else if (amount > 1000000L) {
+                        if(shiftDown)
+                            amountToText = Long.toString(amount / 1000L) + "B";
+                        else
+                            amountToText = Long.toString(amount / 1000000L) + "KiloB";
+                    }
+                    else if (amount > 9999L)
+                        amountToText = Long.toString(amount / 1000L) + "B";
 				}
 
 				List<String> description = new ArrayList<String>();

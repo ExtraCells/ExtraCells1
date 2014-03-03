@@ -1,7 +1,8 @@
 package extracells.items;
 
-import java.util.List;
-
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+import extracells.Extracells;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.EnumRarity;
@@ -9,9 +10,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.StatCollector;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-import extracells.Extracells;
+
+import java.util.List;
 
 public class ItemCasing extends Item
 {
@@ -70,7 +70,7 @@ public class ItemCasing extends Item
 	public String getUnlocalizedName(ItemStack itemstack)
 	{
 		int i = itemstack.getItemDamage();
-		return "item.casing.advanced." + suffixes[i];
+		return "item.casing.advanced." + (i < suffixes.length ? suffixes[i] : "NULL");
 	}
 
 	public EnumRarity getRarity(ItemStack par1)

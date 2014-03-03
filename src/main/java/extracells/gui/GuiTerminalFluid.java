@@ -147,17 +147,25 @@ public class GuiTerminalFluid extends GuiContainer
 
 		drawWidgets(mouseX, mouseY);
 
+        boolean shiftDown = Keyboard.isKeyDown(Keyboard.KEY_LSHIFT) || Keyboard.isKeyDown(Keyboard.KEY_RSHIFT);
+
 		String amountToText = Long.toString(currentFluidAmount) + "mB";
 		if (Extracells.shortenedBuckets)
 		{
-			if (currentFluidAmount > 1000000000L)
-				amountToText = Long.toString(currentFluidAmount / 1000000000L) + "MegaB";
-			else if (currentFluidAmount > 1000000L)
-				amountToText = Long.toString(currentFluidAmount / 1000000L) + "KiloB";
+			if (currentFluidAmount > 1000000000L) {
+                if(shiftDown)
+                    amountToText = Long.toString(currentFluidAmount / 1000000L) + "KiloB";
+                else
+                    amountToText = Long.toString(currentFluidAmount / 1000000000L) + "MegaB";
+            }
+			else if (currentFluidAmount > 1000000L) {
+                if(shiftDown)
+                    amountToText = Long.toString(currentFluidAmount / 1000L) + "B";
+                else
+                    amountToText = Long.toString(currentFluidAmount / 1000000L) + "KiloB";
+            }
 			else if (currentFluidAmount > 9999L)
-			{
 				amountToText = Long.toString(currentFluidAmount / 1000L) + "B";
-			}
 		}
 
 		fontRenderer.drawString(StatCollector.translateToLocal("tooltip.amount") + ": " + amountToText, 45, 73, 0x000000);
