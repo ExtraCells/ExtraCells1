@@ -51,6 +51,7 @@ public class Extracells
 	public static int tickRateExport;
 	public static int tickRateImport;
 	public static int tickRateStorage;
+	public static int tickRateChamber;
 	
 	public static LPHelper lpHelper;
 
@@ -80,6 +81,7 @@ public class Extracells
 		tickRateExport = config.get("Tick Rates", "tickRateExportBus", 20, "Every x ticks the export bus ticks. mb/t get adjusted automatically ;)").getInt();
 		tickRateImport = config.get("Tick Rates", "tickRateImportBus", 20, "Every x ticks the import bus ticks. mb/t get adjusted automatically ;)").getInt();
 		tickRateStorage = config.get("Tick Rates", "tickRateStorageBus", 20, "Every x ticks the storage bus ticks. mb/t get adjusted automatically ;)").getInt();
+		tickRateChamber = config.get("Tick Rates", "tickRateCraftingChamber", 20, "Every x ticks the crafting chamber  ticks. mb/t get adjusted automatically ;)").getInt();
 
 		// Fluid Mode Settings
 		WidgetFluidModes.FluidMode.DROPS.setAmount(config.get("Fluid Rates", "rateDrop", 20, "The Amount of Fluid being filled/drained per tick on the \"Drop\"-Amount").getInt());

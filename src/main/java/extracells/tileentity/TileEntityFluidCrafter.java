@@ -35,7 +35,7 @@ public class TileEntityFluidCrafter extends TileEntity implements ITileCraftingP
 	private IGridInterface grid;
 	private boolean powerStatus = false, networkStatus = true;
 	private int currentTick = 0;
-	private final int tickRate = Extracells.tickRateImport;
+	private final int tickRate = Extracells.tickRateChamber;
 
 	@Override
 	public void updateEntity()
