@@ -115,7 +115,7 @@ public class TileEntityTerminalFluid extends ColorableECTile implements IGridMac
 								ItemStack inputToBeFilled = inputTemp.copy();
 								int filled = fluidContainerItem.fill(inputToBeFilled, request, true);
 								inputToBeFilled.stackSize = 1;
-								if (filled >= request.amount)
+								if (filled >= 0)
 								{
 									if (output == null)
 									{
