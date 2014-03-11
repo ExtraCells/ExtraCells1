@@ -158,32 +158,26 @@ public class TileEntityBusFluidExport extends ColorableECTile implements IGridMa
 
 	public void exportFluid(FluidStack toExport, IFluidHandler tankToFill, ForgeDirection from, FluidMode mode)
 	{
-		if (toExport == null)
-			return;
-
-		int fillable = tankToFill.fill(from, toExport, false);
-
-		if (fillable > 0)
+	
+		IMEInventoryHandler cellArray = grid.getCellArray();
+		if (cellArray != null)
 		{
-			int filled = tankToFill.fill(from, toExport, true);
-
-			IAEItemStack toExtract = Util.createItemStack(new ItemStack(FLUIDDISPLAY.getItemInstance(), filled, toExport.fluidID));
-
-			IMEInventoryHandler cellArray = grid.getCellArray();
-			if (cellArray != null)
+			if (toExport == null)
+				return;
+			int fillable = tankToFill.fill(from, toExport, false);
+	
+			if (fillable > 0)
 			{
+				IAEItemStack toExtract = Util.createItemStack(new ItemStack(FLUIDDISPLAY.getItemInstance(), fillable, toExport.fluidID));
+	
 				IAEItemStack extracted = cellArray.extractItems(toExtract);
 
 				grid.useMEEnergy(mode.getCost() * tickRate, "Export Fluid");
 
-				if (extracted == null)
+				if (extracted != null)
 				{
-					toExport.amount = filled;
-					tankToFill.drain(from, toExport, true);
-				} else if (extracted.getStackSize() < filled)
-				{
-					toExport.amount = (int) (filled - (filled - extracted.getStackSize()));
-					tankToFill.drain(from, toExport, true);
+					toExport.amount = (int) extracted.getStackSize();
+					tankToFill.fill(from, toExport, true);
 				}
 			}
 		}
