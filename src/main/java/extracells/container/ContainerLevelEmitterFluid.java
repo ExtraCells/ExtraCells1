@@ -117,9 +117,9 @@ public class ContainerLevelEmitterFluid extends ECContainer
 			FluidStack inContainer = FluidContainerRegistry.getFluidForFilledItem(source);
 			if (inContainer != null)
 				return new ItemStack(ItemEnum.FLUIDDISPLAY.getItemInstance(), 1, inContainer.fluidID);
-		} else if (source.getItem() instanceof ItemFluidContainer)
+		} else if (source.getItem() instanceof IFluidContainerItem)
 		{
-			FluidStack inContainer = ((ItemFluidContainer) source.getItem()).getFluid(source);
+			FluidStack inContainer = ((IFluidContainerItem) source.getItem()).getFluid(source);
 			if (inContainer != null)
 				return new ItemStack(ItemEnum.FLUIDDISPLAY.getItemInstance(), 1, inContainer.fluidID);
 		}
