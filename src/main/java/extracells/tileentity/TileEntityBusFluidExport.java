@@ -177,7 +177,7 @@ public class TileEntityBusFluidExport extends ColorableECTile implements IGridMa
 				if (extracted != null)
 				{
 					toExport.amount = (int) extracted.getStackSize();
-					tankToFill.fill(from, toExport, true);
+					tankToFill.fill(from, new FluidStack(toExport.fluidID, (int) extracted.getStackSize()), true);
 				}
 			}
 		}
