@@ -138,7 +138,6 @@ public class ModelCertusTank extends ModelBase
 				renderer.renderFaceXNeg(id, x, y, z, fluidIcon);
 				tessellator.setNormal(1.0F, 0.0F, 0.0F);
 				renderer.renderFaceXPos(id, x, y, z, fluidIcon);
-				GL11.glDisable(GL11.GL_BLEND);
 			}
 		}
 	}
