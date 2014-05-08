@@ -64,6 +64,7 @@ public class TileEntityFluidCrafter extends TileEntity implements ITileCraftingP
 						removeItems(stack);
 					}
 					grid.getCellArray().addItems(Util.createItemStack(pattern.getOutput()));
+
 				}
 			}
 		}
@@ -137,16 +138,23 @@ public class TileEntityFluidCrafter extends TileEntity implements ITileCraftingP
 		if (canPushItem(out))
 		{
 			ItemStack rejected = null;
+
 			for (int i = 0; i < bufferInventory.slots.size(); i++)
 			{
 				ItemStack stack = bufferInventory.getStackInSlot(i) != null ? bufferInventory.getStackInSlot(i).copy() : null;
-				if (stack == null)
+                if (stack == null)
 				{
 					bufferInventory.slots.set(i, out);
+                    if (!out.getItem().doesContainerItemLeaveCraftingGrid(out)) {
+                        grid.getCellArray().addItems(Util.createItemStack(out));
+                    }
 					return rejected;
 				} else if (stack.isItemEqual(out) && ItemStack.areItemStackTagsEqual(out, stack))
 				{
-					stack.stackSize += out.stackSize;
+                    stack.stackSize += out.stackSize;
+                    if (!out.getItem().doesContainerItemLeaveCraftingGrid(out)) {
+                        grid.getCellArray().addItems(Util.createItemStack(out));
+                    }
 					bufferInventory.slots.set(i, stack);
 					return rejected;
 				}
