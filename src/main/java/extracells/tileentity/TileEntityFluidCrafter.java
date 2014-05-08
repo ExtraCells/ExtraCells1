@@ -50,7 +50,7 @@ public class TileEntityFluidCrafter extends TileEntity implements ITileCraftingP
 			}
 		}
 	}
-	
+
 	public void doUpdateEntity()
 	{
 		if (grid != null && isMachineActive() && grid.getCellArray() != null)
@@ -64,7 +64,6 @@ public class TileEntityFluidCrafter extends TileEntity implements ITileCraftingP
 						removeItems(stack);
 					}
 					grid.getCellArray().addItems(Util.createItemStack(pattern.getOutput()));
-
 				}
 			}
 		}
