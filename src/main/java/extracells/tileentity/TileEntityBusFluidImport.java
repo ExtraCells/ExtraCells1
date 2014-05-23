@@ -325,7 +325,7 @@ public class TileEntityBusFluidImport extends ColorableECTile implements IGridMa
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
-		if(!redstoneStatus && getRedstoneMode() == WhenOn || redstoneStatus && getRedstoneMode() == WhenOff)
+		if(!redstoneStatus && getRedstoneMode() == RedstoneModeInput.WhenOn || redstoneStatus && getRedstoneMode() == RedstoneModeInput.WhenOff)
 			return 0;
 		if (resource != null && getGrid() != null && isPowered() && from.ordinal() == this.blockMetadata)
 		{
