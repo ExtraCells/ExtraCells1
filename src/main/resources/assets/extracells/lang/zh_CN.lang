@@ -43,11 +43,11 @@ tile.block.fluid.terminal.name=ME流体访问终端
 tile.block.fluid.transitionplane.name=ME流体转换板
 tile.block.certustank.name=赛特斯水槽
 tile.block.walrus.name=海象
-tile.block.fluid.levelemitter.name=ME液体信号发射器
-tile.block.fluid.interface.name=ME液体接口
-tile.block.fluid.void.name=虚空液体接口
-tile.block.fluid.crafter.name=ME液体合成仓
-tile.block.fluid.monitor.storage.name=ME液体存储监控器
+tile.block.fluid.levelemitter.name=ME流体信号发射器
+tile.block.fluid.interface.name=ME流体接口
+tile.block.fluid.void.name=虚空流体接口
+tile.block.fluid.crafter.name=ME流体合成仓
+tile.block.fluid.monitor.storage.name=ME流体存储监控器
 
 //Tooltips and Chat-Messages
 tooltip.belongsto=该存储器属于:
