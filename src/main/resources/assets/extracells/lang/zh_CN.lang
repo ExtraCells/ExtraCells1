@@ -43,16 +43,19 @@ tile.block.fluid.terminal.name=ME流体访问终端
 tile.block.fluid.transitionplane.name=ME流体转换板
 tile.block.certustank.name=赛特斯水槽
 tile.block.walrus.name=海象
-tile.block.fluid.levelemitter.name=ME液体信号发射器
-tile.block.fluid.interface.name=ME液体接口
-tile.block.fluid.void.name=虚空液体接口
+tile.block.fluid.levelemitter.name=ME流体信号发射器
+tile.block.fluid.interface.name=ME流体接口
+tile.block.fluid.void.name=虚空流体接口
+tile.block.fluid.crafter.name=ME流体合成仓
+tile.block.fluid.monitor.storage.name=ME流体存储监控器
 
 //Tooltips and Chat-Messages
 tooltip.belongsto=该存储器属于:
 tooltip.notyours=你是这台存储驱动器的拥有者!
 tooltip.accessgranted=授权访问!
 tooltip.storageencrypted=存储器已加密!
-tooltip.empty=空
+tooltip.empty1=空
+tooltip.empty2=空
 tooltip.block=方块
 tooltip.equaltrade1=平等交易模式(1*1)
 tooltip.equaltrade3=平等交易模式(3*3)
