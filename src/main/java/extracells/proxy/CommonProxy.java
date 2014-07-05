@@ -208,8 +208,14 @@ public class CommonProxy implements IGuiHandler
 			{ "EFE", "FPF", "EFE", 'E', appeng.api.Blocks.blkEnergyCell, 'F', appeng.api.Materials.matFluxCrystal.copy(), 'P', appeng.api.Materials.matProcessorBasic.copy() });
 
 			// Blast resistant ME Drive
-			GameRegistry.addShapedRecipe(hardMEDrive, new Object[]
-			{ "OOO", "ODO", "OCO", 'O', Block.obsidian, 'D', appeng.api.Blocks.blkDrive.copy(), 'C', appeng.api.Blocks.blkColorlessCableCovered.copy() });
+			try {
+				GameRegistry.addShapedRecipe(hardMEDrive, new Object[]
+				{ "OOO", "ODO", "OCO", 'O', Block.obsidian, 'D', appeng.api.Blocks.blkDrive.copy(), 'C', appeng.api.Blocks.blkColorlessCableCovered.copy() });
+			} catch (Throwable e)
+			{
+				// ME Drive was deactivated
+			}
+
 
 			// ME Fluid Import Bus
 			GameRegistry.addShapedRecipe(fluidImportBus, new Object[]
