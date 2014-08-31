@@ -1,6 +1,8 @@
 ExtraCells
 ==========
 
+No Support anymore! Use ExtraCells 2 for MC 1.7.x!
+
 A mighty Add-On for Applied Energistics
 
 To build this, download the project (ZIP or fork or whatever) and execute the build.bat/build.sh. The build files will be in /build/lib/
