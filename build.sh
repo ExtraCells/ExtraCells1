@@ -1,1 +1,2 @@
-gradlew clean setupCIWorkSpace build
+chmod +x gradlew
+./gradlew clean setupCIWorkSpace build
