@@ -17,4 +17,4 @@ Drone.IO:
 Dmod:
 [![Build Status](http://shadowcity.net:8080/job/ExtraCells/badge/icon)](http://shadowcity.net:8080/job/ExtraCells/lastSuccessfulBuild/)
 
-ExtraCells 2 is licensed under the MIT license.
+ExtraCells is licensed under the MIT license.
